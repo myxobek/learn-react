@@ -1,0 +1,14 @@
+{
+  "name": "learn-react",
+  "version": "1.0.0",
+  "description": "learn-react",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "myxobek",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.14.0"
+  }
+}
