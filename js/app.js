@@ -98,22 +98,64 @@ let News = React.createClass({
     }
 });
 
-let TestInput = React.createClass({
+let Add = React.createClass({
+    componentDidMount: function(e) {
+        ReactDOM.findDOMNode(this.refs.author).focus();
+        ReactDOM.findDOMNode(this.refs.alert_button).disabled = true;
+    },
     onBtnClickHandler: function(e) {
-        console.log(this.refs);
-        alert( ReactDOM.findDOMNode(this.refs.myTestInput).value );
+        e.preventDefault();
+        let author = ReactDOM.findDOMNode(this.refs.author).value;
+        let text = ReactDOM.findDOMNode(this.refs.text).value;
+        alert(author+"\n"+text);
+    },
+    onCheckRuleClick: function(e) {
+        this.setState({ agreeIsChecked: e.target.checked });
+    },
+    onFieldChange: function(fieldName, e) {
+        let next = {};
+        next[fieldName] = ( e.target.value.trim().length > 0 );
+        this.setState(next);
+    },
+    getInitialState: function() {
+        return {
+            agreeIsChecked: false,
+            authorIsFilled: false,
+            textIsFilled: false
+        }
     },
     render: function() {
+        let agreeIsChecked  = this.state.agreeIsChecked;
+        let authorIsFilled  = this.state.authorIsFilled;
+        let textIsFilled    = this.state.textIsFilled;
         return (
-            <div>
+            <form className="add cf">
                 <input
-                    className="test-input"
+                    type="text"
+                    className="add__author"
                     defaultValue=""
-                    placeholder="Введите значение"
-                    ref="myTestInput"
+                    placeholder="Ваше имя"
+                    ref="author"
+                    onChange={this.onFieldChange.bind(this, 'authorIsFilled')}
                 />
-                <button onClick={this.onBtnClickHandler} ref="alert_btn">Нажми меня!</button>
-            </div>
+                <textarea
+                    className="add__text"
+                    defaultValue=""
+                    placeholder="Текст новости"
+                    ref="text"
+                    onChange={this.onFieldChange.bind(this, 'textIsFilled')}
+                />
+                <label className="add__checkrule">
+                    <input type="checkbox" defaultChecked={false} ref="checkrule" onChange={this.onCheckRuleClick}/>Я согласен с правилами
+                </label>
+                <button
+                    className="add__btn"
+                    onClick={this.onBtnClickHandler}
+                    ref="alert_button"
+                    disabled={!(agreeIsChecked && authorIsFilled && textIsFilled)}>
+                    Показать новость
+                </button>
+            </form>
         )
     }
 });
@@ -123,7 +165,7 @@ let App = React.createClass({
         return (
             <div className="app">
                 <h3>Новости</h3>
-                <TestInput/>
+                <Add/>
                 <News data={my_news} />
             </div>
         );
