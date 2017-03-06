@@ -62,6 +62,11 @@ let News = React.createClass({
     propTypes: {
         data: React.PropTypes.array.isRequired
     },
+    getInitialState: function(){
+        return {
+            counter: 0
+        }
+    },
     render: function() {
         let data = this.props.data;
         let newsTemplate;
@@ -84,9 +89,32 @@ let News = React.createClass({
         return (
             <div className="news">
                 {newsTemplate}
-                <strong className={'news_count ' + data.length > 0 ? '' : 'none'}>Всего новостей: {data.length}</strong>
+                <strong
+                    className={'news_count ' + data.length > 0 ? '' : 'none'}>
+                    Всего новостей: {data.length}
+                </strong>
             </div>
         );
+    }
+});
+
+let TestInput = React.createClass({
+    onBtnClickHandler: function(e) {
+        console.log(this.refs);
+        alert( ReactDOM.findDOMNode(this.refs.myTestInput).value );
+    },
+    render: function() {
+        return (
+            <div>
+                <input
+                    className="test-input"
+                    defaultValue=""
+                    placeholder="Введите значение"
+                    ref="myTestInput"
+                />
+                <button onClick={this.onBtnClickHandler} ref="alert_btn">Нажми меня!</button>
+            </div>
+        )
     }
 });
 
@@ -95,6 +123,7 @@ let App = React.createClass({
         return (
             <div className="app">
                 <h3>Новости</h3>
+                <TestInput/>
                 <News data={my_news} />
             </div>
         );
